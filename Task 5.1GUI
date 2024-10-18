@@ -1,3 +1,6 @@
+Here's the code with only the most necessary comments:
+
+```python
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QRadioButton, QVBoxLayout, QPushButton
 import RPi.GPIO as GPIO
@@ -21,10 +24,12 @@ class LEDController(QWidget):
         
         layout = QVBoxLayout()
         
+        # Create radio buttons for each LED
         self.red_radio = QRadioButton('Red')
         self.green_radio = QRadioButton('Green')
         self.blue_radio = QRadioButton('Yellow ')
         
+        # Connect radio buttons to LED control
         self.red_radio.toggled.connect(self.turn_on_led)
         self.green_radio.toggled.connect(self.turn_on_led)
         self.blue_radio.toggled.connect(self.turn_on_led)
@@ -33,7 +38,7 @@ class LEDController(QWidget):
         layout.addWidget(self.green_radio)
         layout.addWidget(self.blue_radio)
         
-        # Exit button
+        # Exit button to close the application
         exit_button = QPushButton('Exit')
         exit_button.clicked.connect(self.close_application)
         layout.addWidget(exit_button)
@@ -41,10 +46,12 @@ class LEDController(QWidget):
         self.setLayout(layout)
         
     def turn_on_led(self):
+        # Turn off all LEDs
         GPIO.output(RED_LED_PIN, GPIO.LOW)
         GPIO.output(GREEN_LED_PIN, GPIO.LOW)
         GPIO.output(YELLOW_LED_PIN, GPIO.LOW)
         
+        # Turn on the selected LED
         if self.red_radio.isChecked():
             GPIO.output(RED_LED_PIN, GPIO.HIGH)
         elif self.green_radio.isChecked():
@@ -53,9 +60,10 @@ class LEDController(QWidget):
             GPIO.output(YELLOW_LED_PIN, GPIO.HIGH)
     
     def close_application(self):
+        # Clean up GPIO and close
         GPIO.cleanup()
         self.close()
-
+# Create the application and show the GUI window
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = LEDController()
